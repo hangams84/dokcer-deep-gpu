@@ -260,6 +260,14 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
         libprotobuf-dev \
         libsnappy-dev \
         protobuf-compiler
+        
+# ==================================================================
+# jupyter notebook extensions
+# ------------------------------------------------------------------
+
+RUN python -m pip --no-cache-dir install --upgrade jupyter_contrib_nbextensions && \
+    jupyter contrib nbextension install --user && \
+    jupyter nbextension enable codefolding/main
 
 RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     PIP_INSTALL="python -m pip --no-cache-dir install --upgrade" && \
@@ -282,6 +290,7 @@ RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
 # ==================================================================
 # sonnet
 # ------------------------------------------------------------------
+
 
 RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
     PIP_INSTALL="python -m pip --no-cache-dir install --upgrade" && \
@@ -408,10 +417,11 @@ EXPOSE 8888
 # for tensorboard
 EXPOSE 6006
 
+RUN mkdir /data
 RUN mkdir /notebook
 VOLUME ["/notebook"]
 
-ENTRYPOINT jupyter notebook --no-browser --ip="0.0.0.0" --port=8888 --notebook-dir="/notebook"
+#ENTRYPOINT jupyter notebook --no-browser --ip="0.0.0.0" --port=8888 --notebook-dir="/notebook"
 
 WORKDIR /notebook
 
